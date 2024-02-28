@@ -1,0 +1,17 @@
+﻿﻿@using SocialNetwork.Core.Application.ViewModels.User;
+
+@{
+    ViewData["Title"] = "LogOut";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-12 col-lg-4">
+            <p>Are you sure you want to logout?</p>
+            <p>
+                <a asp-controller="User" asp-action="Index" class="btn btn-primary">Yes</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-light ml-5 border-dark">No</a>
+            </p>
+        </div>
+    </div>
+</div>

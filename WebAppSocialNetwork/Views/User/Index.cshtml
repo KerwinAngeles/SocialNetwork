@@ -1,0 +1,51 @@
+﻿﻿@using SocialNetwork.Core.Application.ViewModels.User;
+@model LoginViewModel;
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<body>
+    <section>
+        <div class="row mt-5 pt-5">
+            <div class="col-12 col-sm-4 col-md-4 m-auto">
+                <div class="card border-0 shadow">
+                    <div class="card-body">
+                        @if(Model.HasError)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <p>@Model.Error</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+                        <div class="text-center">
+                            <h4><i class="fa-brands fa-facebook" style="color: #0866ff"></i></h4>
+                        </div>
+                      
+                        <form method="post" asp-controller="User" asp-action="Index">
+                            <div class="mb-2">
+                                <input asp-for="UserName" class="form-control" placeholder="User Name" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+
+                            </div>
+                            <div class="mb-2">
+                                <input asp-for="Password" class="form-control" placeholder="Password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="d-grid gap-2 ">
+                                <button class="btn text-white fw-bold" style="background-color:#0866ff">Login</button>
+                            </div>
+                        </form>
+
+                        <div class="text-center">
+                            <a asp-controller="User" asp-action="ForgotPassword" class="nav-link pointer-event small" style="color:#0866ff ">Have you forgotten the password?</a>
+                        </div>
+                        <div>
+                            <a asp-controller="User" asp-action="Register" class="btn text-white w-100 mt-2 fw-bold" style="background-color:#42b72a">Create new account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>

@@ -1,0 +1,23 @@
+﻿﻿@using SocialNetwork.Core.Application.ViewModels.User;
+@model string;
+
+@{
+    ViewData["Title"] = "Confirm Email";
+}
+
+<body>
+    <section>
+        <div class="row mt-5 pt-5">
+            <div class="col-12 col-sm-4 col-md-4 m-auto">
+                <div class="card border-0 shadow">
+                    <div class="card-body">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <p>@Model - <a class="btn btn-primary" asp-controller="User" asp-action="Index">Sign In</a> </p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
