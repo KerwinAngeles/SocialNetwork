@@ -31,8 +31,8 @@ namespace SocialNetwork.Infrastructure.Persistence
 
             #region "Repository"
                 services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-                services.AddTransient<IUserRepository, UserRepository>();
                 services.AddTransient<IPublicationRepository, PublicationRepository>();
+                services.AddTransient<ICommentRepository, CommentRepository>();
             #endregion
         }
     }

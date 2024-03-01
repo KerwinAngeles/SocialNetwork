@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Images\PerfilProfile\" />
+    <Folder Include="wwwroot\Images\Publication\" />
   </ItemGroup>
 
 </Project>

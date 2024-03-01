@@ -14,14 +14,20 @@ namespace SocialNetwork.Core.Application.ViewModels.Publication
 
         [Required(ErrorMessage = "You must enter a title!!")]
         [DataType(DataType.Text)]
-        public string? Title { get; set; }
+        public string Title { get; set; } = null!;
 
         [DataType(DataType.DateTime)]
-        public DateTime DateCreate { get; set; } = DateTime.Now;
+        public DateTime? DateCreate { get; set; }
         public string? ImageUrl { get; set; }
         public string? VideoUrl { get; set; }
 
         [DataType(DataType.Upload)]
         public IFormFile? File { get; set; }
+        public string? UserId { get; set; }
+
+        public SavePublicationViewModel()
+        {
+            DateCreate = DateTime.Now;
+        }
     }
 }

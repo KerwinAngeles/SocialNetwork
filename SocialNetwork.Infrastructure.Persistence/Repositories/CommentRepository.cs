@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork.Infrastructure.Persistence.Repositories
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    public class CommentRepository : GenericRepository<Comment>, ICommentRepository
     {
         private readonly ApplicationDbContext _context;
-        public UserRepository(ApplicationDbContext context) : base(context)
+        public CommentRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
+
     }
 }

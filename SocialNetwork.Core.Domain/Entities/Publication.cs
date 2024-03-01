@@ -15,8 +15,7 @@ namespace SocialNetwork.Core.Domain.Entities
         public DateTime DateCreate { get; set; }
 
         //Property Navigation
-        public int UserId { get; set; }
-        public User? User { get; set; }
+        public string? UserId { get; set; }
         public ICollection<Comment>? Comments { get; set;} 
     }
 }

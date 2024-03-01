@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using SocialNetwork.Core.Application.Dtos.Account;
+using SocialNetwork.Core.Application.ViewModels.Comment;
+using SocialNetwork.Core.Application.ViewModels.Publication;
 using SocialNetwork.Core.Application.ViewModels.User;
 using SocialNetwork.Core.Domain.Entities;
 using System;
@@ -35,16 +37,34 @@ namespace SocialNetwork.Core.Application.Mappings
                .ForMember(x => x.HasError, opt => opt.Ignore())
                .ForMember(x => x.Error, opt => opt.Ignore())
                .ReverseMap();
-
-            CreateMap<User, SaveUserViewModel>()
-             .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore())
-             .ForMember(x => x.HasError, opt => opt.Ignore())
-             .ForMember(x => x.Error, opt => opt.Ignore())
-             .ReverseMap()
-             .ForMember(dest => dest.Comments, opt => opt.Ignore())
-             .ForMember(dest => dest.Publications, opt => opt.Ignore())
-             .ForMember(dest => dest.replies, opt => opt.Ignore());
             #endregion
+
+            #region "Publication"
+            CreateMap<Publication, PublicationViewModel>()
+                .ForMember(x => x.UserName, opt => opt.Ignore())
+                .ForMember(x => x.UserPhoto, opt => opt.Ignore())
+                .ForMember(x => x.User, opt => opt.Ignore())
+                .ForMember(x => x.UserLastName, opt  => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<Publication, SavePublicationViewModel>()
+                .ForMember(x => x.File, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(x => x.Comments, opt => opt.Ignore());
+            #endregion
+
+            #region "Comment"
+            CreateMap<Comment, CommentViewModel>()
+                .ForMember(x => x.UserName, opt => opt.Ignore())
+                .ForMember(x => x.UserPhoto, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<Comment, SaveCommentViewModel>()
+                .ReverseMap()
+                .ForMember(x => x.Children, opt => opt.Ignore())
+                .ForMember(x => x.Publication, opt => opt.Ignore());
+            #endregion
+
         }
     }
 }

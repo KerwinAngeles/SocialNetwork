@@ -72,6 +72,9 @@ namespace SocialNetwork.Infrastructure.Identity.Services
             var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
             response.Roles = rolesList.ToList();
             response.UserName = user.UserName; 
+            response.ImageUrl = user.ImageUrl;
+            response.Name = user.Name;
+            response.LastName = user.LastName;
             response.IsVerified = user.EmailConfirmed;
 
             return response;

@@ -15,15 +15,13 @@ namespace SocialNetwork.Core.Application.Services
     public class UserService : IUserService
     {
         private readonly IAccountService _accountService;
-        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IUploadImageService _uploadImageService;
         
-        public UserService(IAccountService accountService, IMapper mapper, IUserRepository userRepository, IUploadImageService uploadImages)
+        public UserService(IAccountService accountService, IMapper mapper, IUploadImageService uploadImages)
         {
             _accountService = accountService;
             _mapper = mapper;
-            _userRepository = userRepository;
             _uploadImageService = uploadImages;
         }
 
@@ -37,17 +35,6 @@ namespace SocialNetwork.Core.Application.Services
         public async Task<RegisterResponse> RegisterAsync(SaveUserViewModel userVm, string origin)
         {
             RegisterRequest registerRequest = _mapper.Map<RegisterRequest>(userVm);
-
-            User user = _mapper.Map<User>(userVm);
-
-            await _userRepository.AddAsync(user);
-
-            if (user != null && user.Id != null)
-            {
-                user.ImageUrl = _uploadImageService.UploadFile(userVm.PhotoProfile, user.Id);
-                await _userRepository.UpdateAsync(user, user.Id);
-            }
-
             return await _accountService.RegisterAsync(registerRequest, origin);
         }
 
