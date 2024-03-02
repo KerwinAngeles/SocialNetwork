@@ -26,7 +26,7 @@
 
             @foreach (var publication in Model)
             {
-                <div class="card gedf-card mt-2">
+                <div class="card gedf-card mt-2" style="max-width: 500px;">
                     <div class="card-header" style="background: #f6f8fa">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -43,13 +43,18 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text fw-normal">@publication.Title</p>
-                        @if(publication.ImageUrl != null || publication.VideoUrl != null)
+                        @if(publication.ImageUrl != null)
                         {
-                            <div class="d-flex justify-content-center mb-3">
-                                <img class="align-content-center" width="250" height="250" src="@publication.ImageUrl" />
-                                <iframe width="250" height="250" src="@publication.VideoUrl" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <div class="d-flex justify-content-center mb-2">
+                                <img class="align-content-center" style="max-width: 500px;" src="@publication.ImageUrl" />
                             </div>
                         }  
+                        @if(publication.VideoUrl != null)
+                        {
+                            <div class="d-flex justify-content-center mb-2">
+                                <iframe width="400" height="250" src="@publication.VideoUrl" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            </div>
+                        }
                         <div class="text-muted h7 mb-2 text-end"> <i class="fa fa-clock-o"></i>@publication.DateCreate</div>
                     </div>
 
@@ -62,35 +67,49 @@
                             <div class="comments mt-4" style="display:none">
                                 @if (publication.Comments != null && publication.Comments.Any())
                                 {
-                                    @foreach (var comment in publication.Comments)
+                                    
+                                    @foreach (var comment in publication.Comments.Where(c => c.ParentId == null))
                                     {
+                                        <div class="mr-2 mb-2">
+                                            <div style="flex-basis: auto">
 
-                                        <div class="mr-2 mb-2" style="flex-basis: auto;">
-                                            <img class="rounded-circle" width="40" height="30" src="@comment.UserPhoto" alt="" /> @comment.UserName: @comment.Message
+                                                <div>
+                                                    <img class="rounded-circle" width="40" height="30" src="@comment.UserPhoto" alt="" /> @comment.UserName: @comment.Message
+                                                </div>
+                                                
+                                            </div>
+                                            <a class="btn-reply mr-2 mb-2 text-decoration-none text-secondary" style="border: none; padding-left: 45px; padding-right: 45px; font-size: 0.8em; cursor: pointer;"> reply</a>
+                                            <div class="replies mt-2" style="display:none">
+                                                <form asp-controller="Home" asp-action="CreateReplyComment" method="post" style="border: none; padding-left: 45px; padding-right: 45px;">
+                                                    <input type="hidden" name="publicationId" value="@publication.Id" />
+                                                    <input type="hidden" name="ParentId" value="@comment.Id" />
+                                                    <input required class="form-control-sm me-2 border-1" name="Message" placeholder="answer a comment" />
+                                                    <button type="submit" class="btn btn-secondary btn-sm">Submit</button>
+                                                </form>
+                                            </div>
                                         </div>
 
-                                        @*      <form asp-controller="Home" asp-action="AddChildComment" method="post" class="w-100 d-flex">
-                                                <input type="hidden" name="parentId" value="@comment.Id" />
-                                                <input class="form-control flex-grow-1 me-2" name="message" placeholder="Add Reply" />
-                                                <button type="submit" class="btn btn-secondary btn-sm">Submit</button>
-                                                </form> *@
+                                        @foreach (var reply in comment.Children)
+                                        {
+                                            <div class="mt-2" style="margin-left: 40px;">
+                                                <img class="rounded-circle" width="40" height="30" src="@reply.UserPhoto" alt="" /> @reply.UserName: @reply.Message
+                                            </div>
+                                        }
                                     }
 
                                 }
 
-                                <div class="card-footer d-flex align-items-center" style="background: #f6f8fa">
+                                <div class="card-footer d-flex align-items-center mt-2" style="background: #f6f8fa">
                                     <form asp-controller="Home" asp-action="CreateComment" method="post" class="w-100 d-flex">
                                         <input type="hidden" name="publicationId" value="@publication.Id" />
-                                        <input asp class="form-control flex-grow-1 me-2" name="Message" placeholder="Make a Comment" />
+                                        <input  required asp class="form-control-sm flex-grow-1 me-2 border-1" name="Message" placeholder="Make a Comment" />
                                         <button type="submit" class="btn btn-secondary btn-sm">Submit</button>
                                     </form>
                                 </div>
+
                             </div>
 
                         </div>
-                        
-                       
-                      
                     </div>
                 </div>
             }
@@ -130,6 +149,20 @@
                         commentsContainer.style.display = "block";
                     } else {
                         commentsContainer.style.display = "none";
+                    }
+                });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var toggleButtons = document.querySelectorAll(".btn-reply");
+            toggleButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    var repliesContainer = button.nextElementSibling;
+                    if (repliesContainer.style.display === "none") {
+                        repliesContainer.style.display = "block";
+                    } else {
+                        repliesContainer.style.display = "none";
                     }
                 });
             });

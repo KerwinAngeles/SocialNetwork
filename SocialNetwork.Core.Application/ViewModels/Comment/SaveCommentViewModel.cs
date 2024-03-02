@@ -8,8 +8,7 @@ namespace SocialNetwork.Core.Application.ViewModels.Comment
 {
     public class SaveCommentViewModel
     {  
-        public int Id { get; set; }
-        public string? Message { get; set; }
+        public string Message { get; set; } = null!;
         public string? UserId { get; set; }
         public int PublicationId { get; set; }
         public int? ParentId { get; set; }

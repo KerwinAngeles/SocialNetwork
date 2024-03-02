@@ -59,17 +59,26 @@ namespace SocialNetwork.Core.Application.Services
                 User = userViewModel.Name,
                 UserLastName = userViewModel.LastName,
 
-                Comments = publication.Comments.Select(comment => new CommentViewModel
+                Comments = publication.Comments.Where(comment => comment.ParentId == null)
+                .Select(comment => new CommentViewModel
                 {
                     Id = comment.Id,
                     Message = comment.Message,
                     UserName = userViewModel.Name,
-                    UserPhoto = userViewModel.ImageUrl
-                    
-                }).ToList()
-            }).OrderByDescending(publication => publication.DateCreate).ToList();
-
-
+                    UserPhoto = userViewModel.ImageUrl,
+                    Children = comment.Children != null
+                    ? comment.Children.Select(reply => new CommentViewModel
+                    {
+                        Id = reply.Id,
+                        Message = reply.Message,
+                        UserName = userViewModel.Name,
+                        UserPhoto = userViewModel.ImageUrl
+                    }).ToList()
+                    : new List<CommentViewModel>()
+                }).ToList(),
+            })
+        .OrderByDescending(publication => publication.DateCreate)
+        .ToList();
         }
     }
 }

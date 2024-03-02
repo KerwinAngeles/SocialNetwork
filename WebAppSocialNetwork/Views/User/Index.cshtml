@@ -1,5 +1,5 @@
-﻿﻿@using SocialNetwork.Core.Application.ViewModels.User;
-@model LoginViewModel;
+﻿﻿@using SocialNetwork.Core.Application.ViewModels.User
+@model LoginViewModel
 
 @{
     ViewData["Title"] = "Login";
@@ -11,6 +11,8 @@
             <div class="col-12 col-sm-4 col-md-4 m-auto">
                 <div class="card border-0 shadow">
                     <div class="card-body">
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
                         @if(Model.HasError)
                         {
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">

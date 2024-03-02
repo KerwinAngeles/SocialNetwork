@@ -16,13 +16,11 @@ namespace SocialNetwork.Core.Application.Services
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
-        private readonly IUploadImageService _uploadImageService;
         
-        public UserService(IAccountService accountService, IMapper mapper, IUploadImageService uploadImages)
+        public UserService(IAccountService accountService, IMapper mapper)
         {
             _accountService = accountService;
             _mapper = mapper;
-            _uploadImageService = uploadImages;
         }
 
         public async Task<AuthenticationResponse> LoginAsync(LoginViewModel loginVm)

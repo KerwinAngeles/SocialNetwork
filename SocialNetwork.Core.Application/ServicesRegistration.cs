@@ -19,7 +19,6 @@ namespace SocialNetwork.Core.Application
             #region "Services"
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPublicationService, PublicationService>();
-            services.AddTransient<IUploadImageService, UploadImagesService>();
             services.AddTransient<ICommentService, CommentService>();
             
             #endregion

@@ -21,5 +21,7 @@ namespace SocialNetwork.Core.Application.ViewModels.Publication
         public string? UserPhoto {  get; set; }
         public string? UserId { get; set; }
         public ICollection<CommentViewModel>? Comments { get; set; }
+        public ICollection<CommentViewModel>? Children { get; set; }
+
     }
 }

@@ -117,8 +117,21 @@ namespace WebAppSocialNetwork.Controllers
             {
                 return View("Index", commentViewModel);
             }
+
             await _commentService.Add(commentViewModel);
             return RedirectToRoute(new { controller = "Home", action = "Index" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateReplyComment(SaveCommentViewModel commentViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Index", commentViewModel);
+            }
+            await _commentService.Add(commentViewModel);
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
+
         }
 
         private string UploadFile(IFormFile file, int id, bool isEditMode = false, string photoUrl = "")
@@ -149,17 +162,6 @@ namespace WebAppSocialNetwork.Controllers
                 using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                 {
                     file.CopyTo(stream);
-                }
-
-                if (isEditMode)
-                {
-                    string[] oldImagePart = photoUrl.Split('/');
-                    string oldImageName = oldImagePart[^1];
-                    string completeImageOldPath = Path.Combine(path, oldImageName);
-                    if (System.IO.File.Exists(completeImageOldPath))
-                    {
-                        System.IO.File.Delete(completeImageOldPath);
-                    }
                 }
 
                 return $"{basePath}/{fileName}";

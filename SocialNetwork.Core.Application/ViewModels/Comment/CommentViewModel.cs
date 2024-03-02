@@ -15,7 +15,7 @@ namespace SocialNetwork.Core.Application.ViewModels.Comment
         public string? UserName { get; set; }
         public string? UserPhoto {  get; set; }
         public string? UserId { get; set; }
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
         public int PublicationId { get; set; }
         public PublicationViewModel? Publication { get; set; }
         public CommentViewModel? Parent { get; set; }
