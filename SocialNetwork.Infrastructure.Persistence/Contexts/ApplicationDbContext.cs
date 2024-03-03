@@ -19,6 +19,7 @@ namespace SocialNetwork.Infrastructure.Persistence.Contexts
 
         public DbSet<Publication> Publications { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Friend> Friends { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -26,11 +27,13 @@ namespace SocialNetwork.Infrastructure.Persistence.Contexts
             #region "Tables"
             modelBuilder.Entity<Publication>().ToTable("Publications");
             modelBuilder.Entity<Comment>().ToTable("Comments");
+            modelBuilder.Entity<Friend>().ToTable("Friends");
             #endregion
 
             #region "PrimaryKey"
             modelBuilder.Entity<Publication>().HasKey(p => p.Id);
             modelBuilder.Entity<Comment>().HasKey(c => c.Id);
+            modelBuilder.Entity<Friend>().HasKey(f => f.Id);
             #endregion
 
             #region "Relantioship"

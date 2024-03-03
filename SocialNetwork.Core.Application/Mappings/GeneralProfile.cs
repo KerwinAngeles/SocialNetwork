@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SocialNetwork.Core.Application.Dtos.Account;
 using SocialNetwork.Core.Application.ViewModels.Comment;
+using SocialNetwork.Core.Application.ViewModels.Friend;
 using SocialNetwork.Core.Application.ViewModels.Publication;
 using SocialNetwork.Core.Application.ViewModels.User;
 using SocialNetwork.Core.Domain.Entities;
@@ -63,6 +64,13 @@ namespace SocialNetwork.Core.Application.Mappings
                 .ReverseMap()
                 .ForMember(x => x.Children, opt => opt.Ignore())
                 .ForMember(x => x.Publication, opt => opt.Ignore());
+            #endregion
+
+            #region "Friend"
+            CreateMap<Friend, FriendViewModel>()
+                .ReverseMap();
+            CreateMap<Friend, SaveFriendViewModel>()
+                .ReverseMap();
             #endregion
 
         }

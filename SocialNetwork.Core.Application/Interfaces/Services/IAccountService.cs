@@ -15,6 +15,9 @@ namespace SocialNetwork.Core.Application.Interfaces.Services
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request, string origin);
         Task<string> ConfirmAccountAsync(string userId, string token);
-       
+        Task<AuthenticationResponse> FindByName(string name);
+
+        Task<AuthenticationResponse> FindById(string Id);
+
     }
 }

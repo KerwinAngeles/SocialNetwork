@@ -16,7 +16,5 @@ namespace SocialNetwork.Core.Application.Interfaces.Services
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordViewModel forgotPasswordVm, string origin);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordViewModel resetPasswordVm, string origin);
         Task SignOutAsync();
-
-
     }
 }

@@ -1,32 +1,24 @@
 ﻿@using SocialNetwork.Core.Application.ViewModels.Publication
 @model List<PublicationViewModel>
-
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Friends";
 }
 
+
 <div class="container-fluid gedf-wrapper">
-    
+
     <div class="row">
-       
-            <div class="col-md-3">
-                <div class="card" style="background: #fff">
-                    <div class="card-body text-dark">
-                        <div class="mr-2 text-center">
-                            <img class="rounded-circle" width="60" height="50" src="@ViewBag.photo" alt="">
-                        </div>
-                        <div class="h7 text-center text-dark"> <i class="fa-regular fa-star"></i> @ViewBag.userName <i class="fa-regular fa-star"></i></div>
-                    </div>
+
+        <div class="col-md-4">
+                <div class="mb-3">
+                    <a asp-controller="Friend" asp-action="AddFriend" class="btn btn-secondary">Add</a>
                 </div>
-            </div>
-        
-        <div class="col-md-6 gedf-main">
+        </div>
 
-            @await Html.PartialAsync("Create", new SocialNetwork.Core.Application.ViewModels.Publication.SavePublicationViewModel())
-
+        <div class="col-md-4 gedf-main">
             @foreach (var publication in Model)
             {
-                <div class="card gedf-card mt-2" style="max-width: 500px;">
+                <div class="card gedf-card" style="max-width: 400px;">
                     <div class="card-header" style="background: #fff">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -43,16 +35,16 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text fw-normal">@publication.Title</p>
-                        @if(publication.ImageUrl != null)
+                        @if (publication.ImageUrl != null)
                         {
                             <div class="d-flex justify-content-center mb-2">
-                                <img class="align-content-center" style="max-width: 500px;" src="@publication.ImageUrl" />
+                                <img class="align-content-center" style="max-width: 347px;" src="@publication.ImageUrl" />
                             </div>
-                        }  
-                        @if(publication.VideoUrl != null)
+                        }
+                        @if (publication.VideoUrl != null)
                         {
                             <div class="d-flex justify-content-center mb-2">
-                                <iframe width="400" height="250" src="@publication.VideoUrl" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                <iframe width="200" height="150" src="@publication.VideoUrl" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             </div>
                         }
                         <div class="text-muted h7 mb-2 text-end"> <i class="fa fa-clock-o"></i>@publication.DateCreate</div>
@@ -67,7 +59,7 @@
                             <div class="comments mt-4" style="display:none">
                                 @if (publication.Comments != null && publication.Comments.Any())
                                 {
-                                    
+
                                     @foreach (var comment in publication.Comments.Where(c => c.ParentId == null))
                                     {
                                         <div class="mr-2 mb-2">
@@ -76,7 +68,7 @@
                                                 <div>
                                                     <img class="rounded-circle" width="40" height="30" src="@comment.UserPhoto" alt="" /> @comment.UserName: @comment.Message
                                                 </div>
-                                                
+
                                             </div>
                                             <a class="btn-reply mr-2 mb-2 text-decoration-none text-secondary" style="border: none; padding-left: 45px; padding-right: 45px; font-size: 0.8em; cursor: pointer;"> reply</a>
                                             <div class="replies mt-2" style="display:none">
@@ -102,7 +94,7 @@
                                 <div class="card-footer d-flex align-items-center mt-2" style="background: #fff">
                                     <form asp-controller="Comment" asp-action="CreateComment" method="post" class="w-100 d-flex">
                                         <input type="hidden" name="publicationId" value="@publication.Id" />
-                                        <input  required asp class="form-control-sm flex-grow-1 me-2 border-1" name="Message" placeholder="Make a Comment" />
+                                        <input required asp class="form-control-sm flex-grow-1 me-2 border-1" name="Message" placeholder="Make a Comment" />
                                         <button type="submit" class="btn btn-secondary btn-sm">Submit</button>
                                     </form>
                                 </div>
@@ -115,19 +107,35 @@
             }
         </div>
 
-        <div class="col-md-3">
+
+        <div class="col-md-4">
             <div class="card" style="background: #fff">
                 <div class="card-body text-dark">
                     <div class="mr-2 text-center">
-                        <img class="rounded-circle" width="60" height="50" src="@ViewBag.photo" alt="">
+                        <h5 class="card-title mb-0">Friends</h5>
+
                     </div>
-                    <div class="h7 text-center text-dark"> <i class="fa-regular fa-star"></i> @ViewBag.userName <i class="fa-regular fa-star"></i></div>
+                    @foreach (var item in ViewBag.friend)
+                        {
+                            <div class="card-body">
+
+                                <div class="hstack gap-2 mb-3">
+                                    <div class="avatar">
+                                        <img class="rounded-circle" width="60" height="60" src="@item.ImageUrl" alt="">
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <a class="h6 mb-0 text-decoration-none text-dark">@item.Name @item.LastName </a>
+                                        <p class="mb-0 small text-truncate">@item.UserName</p>
+                                   </div>
+                                        <a class="btn btn-danger rounded-circle icon-md ms-auto"><i class="fa-solid fa-trash"></i></a>
+                                </div>
+                            </div>
+                        }                      
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     <script>

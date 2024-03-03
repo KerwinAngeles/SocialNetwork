@@ -110,30 +110,6 @@ namespace WebAppSocialNetwork.Controllers
             return RedirectToRoute(new { controller = "Home", action = "Index" });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateComment(SaveCommentViewModel commentViewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("Index", commentViewModel);
-            }
-
-            await _commentService.Add(commentViewModel);
-            return RedirectToRoute(new { controller = "Home", action = "Index" });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateReplyComment(SaveCommentViewModel commentViewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("Index", commentViewModel);
-            }
-            await _commentService.Add(commentViewModel);
-            return RedirectToRoute(new { controller = "Home", action = "Index" });
-
-        }
-
         private string UploadFile(IFormFile file, int id, bool isEditMode = false, string photoUrl = "")
         {
             if (isEditMode)

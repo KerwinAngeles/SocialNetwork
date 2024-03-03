@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork.Core.Application.Interfaces.Repositories
 {
-    public interface IPublicationRepository : IGenericRepository<Publication>
+    public interface IFriendRepository : IGenericRepository<Friend>
     {
-        Task<List<Publication>> GetAllpublicationById(string id);
+        Task<List<Friend>> GetAllFriendsOfCurrentUser(string currentUserId);
     }
 }

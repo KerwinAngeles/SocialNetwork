@@ -10,18 +10,20 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork.Infrastructure.Persistence.Repositories
 {
-    public class PublicationRepository : GenericRepository<Publication>, IPublicationRepository
+    public class FriendRepository : GenericRepository<Friend>, IFriendRepository
     {
         private readonly ApplicationDbContext _context;
-        public PublicationRepository(ApplicationDbContext context) : base(context) 
+        public FriendRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<List<Publication>> GetAllpublicationById(string id)
+        public async Task<List<Friend>> GetAllFriendsOfCurrentUser(string currentUserId)
         {
-            var publications = await _context.Publications.Where(p => p.UserId == id).ToListAsync();
-            return publications;
+            return await _context.Friends
+                .Where(f => f.UserId == currentUserId || f.FriendId == currentUserId)
+                .ToListAsync();
         }
+
     }
 }

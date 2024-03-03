@@ -1,0 +1,61 @@
+﻿﻿@using SocialNetwork.Core.Application.ViewModels.User
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<body>
+    <section>
+        <div class="row mt-3 pt-3">
+            <div class="col-12 col-sm-4 col-md-4 m-auto">
+                <div class="card border-0 shadow">
+                    <div class="card-body">
+
+                        <div class="text-center">
+                            <h4><i class="fa-solid fa-pen-to-square" style="color: #0866ff"></i></h4>
+                        </div>
+
+                        <form method="post" asp-controller="User" asp-action="Index">
+                            <div class="mb-2">
+                                <input asp-for="UserName" class="form-control" placeholder="Name" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+
+                            </div>
+                            <div class="mb-2">
+                                <input asp-for="UserName" class="form-control" placeholder="Last Name" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+
+                            </div>
+                            <div class="mb-2">
+                                <input asp-for="UserName" class="form-control" placeholder="Email" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+
+                            </div>
+                            <div class="mb-2">
+                                <input  class="form-control" placeholder="Image" />
+                            </div>
+                            <div class="mb-2">
+                                <input asp-for="UserName" class="form-control" placeholder="Phone" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+
+                            </div>
+                            <div class="mb-2">
+                                <input asp-for="Password" class="form-control" placeholder="Password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="mb-2">
+                                <input asp-for="Password" class="form-control" placeholder="Confirm Password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                           
+                            <div class="d-grid gap-2 ">
+                                <button class="btn text-white fw-bold" style="background-color:#0866ff">Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>

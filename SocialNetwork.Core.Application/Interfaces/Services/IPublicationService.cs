@@ -11,5 +11,7 @@ namespace SocialNetwork.Core.Application.Interfaces.Services
     public interface IPublicationService : IGenericService<SavePublicationViewModel, PublicationViewModel, Publication>
     {
         Task<List<PublicationViewModel>> GetAllViewModelWithInclude();
+        Task<List<PublicationViewModel>> GetAllPublicationFriend();
+
     }
 }

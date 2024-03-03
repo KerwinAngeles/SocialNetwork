@@ -30,6 +30,41 @@ namespace SocialNetwork.Infrastructure.Identity.Services
             _emailService = emailService;
         }
 
+        public async Task<AuthenticationResponse> FindByName(string name)
+        {
+            AuthenticationResponse response = new();
+            var user =  await _userManager.FindByNameAsync(name);
+
+            response.Id = user.Id;
+            response.Email = user.Email;
+            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+            response.Roles = rolesList.ToList();
+            response.UserName = user.UserName;
+            response.ImageUrl = user.ImageUrl;
+            response.Name = user.Name;
+            response.LastName = user.LastName;
+            response.IsVerified = user.EmailConfirmed;
+
+            return response;
+        }
+
+        public async Task<AuthenticationResponse> FindById(string Id)
+        {
+            AuthenticationResponse response = new();
+            var user = await _userManager.FindByIdAsync(Id);
+
+            response.Id = user.Id;
+            response.Email = user.Email;
+            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+            response.Roles = rolesList.ToList();
+            response.UserName = user.UserName;
+            response.ImageUrl = user.ImageUrl;
+            response.Name = user.Name;
+            response.LastName = user.LastName;
+            response.IsVerified = user.EmailConfirmed;
+            return response;
+        }
+
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
         {
 
