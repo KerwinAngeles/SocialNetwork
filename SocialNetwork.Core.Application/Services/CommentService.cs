@@ -35,5 +35,19 @@ namespace SocialNetwork.Core.Application.Services
             vm.UserId = userViewModel.Id;
             return await base.Add(vm);
         }
+
+        public List<CommentViewModel> BuildCommentViewModels(List<Comment> comments)
+        {
+            return comments.Select(comment => new CommentViewModel
+            {
+                Id = comment.Id,
+                Message = comment.Message,
+                UserName = comment.UserName,
+                ImageUrl = comment.ImageUrl,
+                Children = comment.Children != null
+                    ? BuildCommentViewModels(comment.Children.ToList())
+                    : new List<CommentViewModel>()
+            }).ToList();
+        }
     }
 }

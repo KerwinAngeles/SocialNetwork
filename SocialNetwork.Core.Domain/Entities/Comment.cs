@@ -12,6 +12,8 @@ namespace SocialNetwork.Core.Domain.Entities
         public int? ParentId { get; set; }
         public string? Message { get; set; }
         public string? UserId { get; set; }
+        public string? UserName { get; set; }
+        public string? ImageUrl { get; set; }
         public int PublicationId { get; set; }
         public Publication? Publication { get; set; }
         public Comment? Parent { get; set; }

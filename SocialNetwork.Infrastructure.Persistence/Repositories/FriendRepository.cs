@@ -21,8 +21,15 @@ namespace SocialNetwork.Infrastructure.Persistence.Repositories
         public async Task<List<Friend>> GetAllFriendsOfCurrentUser(string currentUserId)
         {
             return await _context.Friends
-                .Where(f => f.UserId == currentUserId || f.FriendId == currentUserId)
+                .Where(f => f.UserId == currentUserId)
                 .ToListAsync();
+        }
+
+        public async Task<Friend> GetFriend (string currentFriend)
+        {
+            var friend = await _context.Friends.FirstOrDefaultAsync(f =>f.UserId == currentFriend);
+            return friend;
+
         }
 
     }

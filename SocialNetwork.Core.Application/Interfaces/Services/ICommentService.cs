@@ -11,6 +11,6 @@ namespace SocialNetwork.Core.Application.Interfaces.Services
 {
     public interface ICommentService : IGenericService<SaveCommentViewModel, CommentViewModel, Comment>
     {
-
+        List<CommentViewModel> BuildCommentViewModels(List<Comment> comments);
     }
 }

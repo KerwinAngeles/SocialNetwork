@@ -43,7 +43,29 @@ namespace WebAppSocialNetwork.Controllers
 
             await _friendService.Add(saveFriend);
 
+            if (saveFriend.HasError)
+            {
+                saveFriend.HasError = true;
+                saveFriend.Error = $"This user name is not found";
+                return View(saveFriend);
+            }
+
             return RedirectToRoute(new { controller = "Friend", action = "Index" });
         } 
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            return View(await _friendService.GetById(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            await _friendService.Delete(id);
+            return RedirectToRoute(new { controller = "Friend", action = "Index" });
+        }
+
+
+
     }
 }

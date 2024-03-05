@@ -25,6 +25,7 @@ namespace SocialNetwork.Core.Application.ViewModels.User
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "You must enter a phone!!")]
+        [RegularExpression(@"^(809|829|849)(-)?\d{3}(-)?\d{4}$", ErrorMessage = "Must be a dominican phone number")]
         [DataType(DataType.PhoneNumber)]
         public string? Phone { get; set; }
 
@@ -42,6 +43,7 @@ namespace SocialNetwork.Core.Application.ViewModels.User
         public string? ConfirmPassword { get; set; }
         public string? ImageUrl { get; set; }
 
+        [Required(ErrorMessage = "You must enter a photo")]
         [DataType(DataType.Upload)]
         public IFormFile? PhotoProfile { get; set; }
         public bool HasError { get; set; }

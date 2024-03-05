@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Org.BouncyCastle.Crypto.Modes.Gcm;
@@ -6,6 +7,7 @@ using SocialNetwork.Core.Application.Dtos.Account;
 using SocialNetwork.Core.Application.Dtos.Email;
 using SocialNetwork.Core.Application.Enums;
 using SocialNetwork.Core.Application.Interfaces.Services;
+using SocialNetwork.Core.Application.ViewModels.Friend;
 using SocialNetwork.Core.Application.ViewModels.User;
 using SocialNetwork.Infrastructure.Identity.Entities;
 using System;
@@ -30,39 +32,79 @@ namespace SocialNetwork.Infrastructure.Identity.Services
             _emailService = emailService;
         }
 
-        public async Task<AuthenticationResponse> FindByName(string name)
+        public async Task<SaveUserViewModel> FindByName(string name)
         {
-            AuthenticationResponse response = new();
-            var user =  await _userManager.FindByNameAsync(name);
+           
+            var user = await _userManager.FindByNameAsync(name);
+            SaveUserViewModel userViewModel = new();
 
-            response.Id = user.Id;
-            response.Email = user.Email;
-            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
-            response.Roles = rolesList.ToList();
-            response.UserName = user.UserName;
-            response.ImageUrl = user.ImageUrl;
-            response.Name = user.Name;
-            response.LastName = user.LastName;
-            response.IsVerified = user.EmailConfirmed;
-
-            return response;
+            userViewModel.HasError = false;
+            if(user != null)
+            {
+                userViewModel.Id = user.Id;
+                userViewModel.UserName = user.UserName;
+                userViewModel.Name = user.Name;
+                userViewModel.LastName = user.LastName;
+                userViewModel.Email = user.Email;
+                userViewModel.Phone = user.PhoneNumber;
+                userViewModel.ImageUrl = user.ImageUrl;
+                return userViewModel;
+            }
+            else
+            {
+                userViewModel.HasError = true;
+                userViewModel.Error = $"An error occurred trying to register this user.";
+                return userViewModel;
+            }
         }
 
-        public async Task<AuthenticationResponse> FindById(string Id)
+        public async Task<SaveFriendViewModel> FindByFriendName(string name)
         {
-            AuthenticationResponse response = new();
-            var user = await _userManager.FindByIdAsync(Id);
+            var user = await _userManager.FindByNameAsync(name);
+            SaveFriendViewModel userViewModel = new();
 
-            response.Id = user.Id;
-            response.Email = user.Email;
-            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
-            response.Roles = rolesList.ToList();
-            response.UserName = user.UserName;
-            response.ImageUrl = user.ImageUrl;
-            response.Name = user.Name;
-            response.LastName = user.LastName;
-            response.IsVerified = user.EmailConfirmed;
-            return response;
+            userViewModel.HasError = false;
+            if (user != null)
+            {
+                userViewModel.Id = user.Id;
+                userViewModel.UserName = user.UserName;
+                userViewModel.Name = user.Name;
+                userViewModel.LastName = user.LastName;
+                userViewModel.ImageUrl = user.ImageUrl;
+                return userViewModel;
+            }
+            else
+            {
+                userViewModel.HasError = true;
+                userViewModel.Error = $"An error occurred trying to register this user.";
+                return userViewModel;
+            }
+        }
+
+        public async Task<SaveUserViewModel> FindById(string Id)
+        {
+            var user = await _userManager.FindByIdAsync(Id);
+            SaveUserViewModel userViewModel = new();
+
+            if (user != null)
+            {
+
+                userViewModel.Id = user.Id;
+                userViewModel.UserName = user.UserName;
+                userViewModel.Name = user.Name;
+                userViewModel.LastName = user.LastName;
+                userViewModel.Email = user.Email;
+                userViewModel.Phone = user.PhoneNumber;
+                userViewModel.ImageUrl = user.ImageUrl;
+
+                return userViewModel;
+            }
+            else
+            {
+                return userViewModel;
+            }
+
+           
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
@@ -240,6 +282,22 @@ namespace SocialNetwork.Infrastructure.Identity.Services
 
             return response;
 
+        }
+
+        public async Task Update(SaveUserViewModel saveUser)
+        {
+            var user = await _userManager.FindByIdAsync(saveUser.Id);
+            user.Name = saveUser.Name;
+            user.LastName = saveUser.LastName;
+            user.Email = saveUser.Email;
+            user.PhoneNumber = saveUser.Phone;
+            user.ImageUrl = saveUser.ImageUrl;
+            if(saveUser.Password != null && saveUser.ConfirmPassword != null)
+            {
+                user.PasswordHash = saveUser.Password;
+                user.PasswordHash = saveUser.ConfirmPassword;
+            }     
+            await _userManager.UpdateAsync(user);
         }
 
         public async Task<string> ConfirmAccountAsync(string userId, string token)

@@ -18,10 +18,13 @@ namespace SocialNetwork.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<List<Publication>> GetAllpublicationById(string id)
+        public async Task<List<Publication>> GetAllpublicationById(string userId)
         {
-            var publications = await _context.Publications.Where(p => p.UserId == id).ToListAsync();
+            var publications = await _context.Publications.Where(p => p.UserId == userId).Include(c => c.Comments)
+                .ToListAsync();
             return publications;
         }
+
+       
     }
 }

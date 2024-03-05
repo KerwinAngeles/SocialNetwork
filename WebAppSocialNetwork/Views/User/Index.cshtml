@@ -27,12 +27,9 @@
                         <form method="post" asp-controller="User" asp-action="Index">
                             <div class="mb-2">
                                 <input asp-for="UserName" class="form-control" placeholder="User Name" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
-
                             </div>
                             <div class="mb-2">
                                 <input asp-for="Password" class="form-control" placeholder="Password" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="d-grid gap-2 ">
                                 <button class="btn text-white fw-bold" style="background-color:#0866ff">Login</button>

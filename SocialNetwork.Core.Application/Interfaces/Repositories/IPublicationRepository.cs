@@ -10,5 +10,6 @@ namespace SocialNetwork.Core.Application.Interfaces.Repositories
     public interface IPublicationRepository : IGenericRepository<Publication>
     {
         Task<List<Publication>> GetAllpublicationById(string id);
+
     }
 }

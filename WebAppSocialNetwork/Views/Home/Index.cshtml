@@ -1,6 +1,5 @@
 ﻿@using SocialNetwork.Core.Application.ViewModels.Publication
 @model List<PublicationViewModel>
-
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -74,7 +73,7 @@
                                             <div style="flex-basis: auto">
 
                                                 <div>
-                                                    <img class="rounded-circle" width="40" height="30" src="@comment.UserPhoto" alt="" /> @comment.UserName: @comment.Message
+                                                    <img class="rounded-circle" width="40" height="30" src="@comment.ImageUrl" alt="" /> @comment.UserName: @comment.Message
                                                 </div>
                                                 
                                             </div>
@@ -91,10 +90,27 @@
 
                                         @foreach (var reply in comment.Children)
                                         {
-                                            <div class="mt-2" style="margin-left: 40px;">
-                                                <img class="rounded-circle" width="40" height="30" src="@reply.UserPhoto" alt="" /> @reply.UserName: @reply.Message
+                                            <div class="mt-2 mb-2" style="margin-left: 40px;">
+                                                <img class="rounded-circle" width="40" height="30" src="@reply.ImageUrl" alt="" /> @reply.UserName: @reply.Message
                                             </div>
+
+                                            @foreach (var replyreply in comment.Children)
+                                            {
+                                                <div class="mt-2" style="margin-left: 40px;">
+                                                    <a class="btn-reply mr-2 mb-2 text-decoration-none text-secondary" style="border: none; padding-left: 45px; padding-right: 45px; font-size: 0.8em;cursor: pointer;"> reply</a>
+                                                    <div class="replies mt-2" style="display:none">
+                                                        <form asp-controller="Comment" asp-action="CreateReplyComment" method="post">
+                                                            <input type="hidden" name="publicationId" value="@publication.Id" />
+                                                            <input type="hidden" name="ParentId" value="@replyreply.Id" />
+                                                            <input required class="form-control-sm me-2 border-1" name="Message" placeholder="answer a comment" />
+                                                            <button type="submit" class="btn btn-secondary btn-sm">Submit</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            }
                                         }
+
+                                      
                                     }
 
                                 }
@@ -108,7 +124,6 @@
                                 </div>
 
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -131,6 +146,7 @@
 
 @section Scripts {
     <script>
+
         document.addEventListener("DOMContentLoaded", function () {
             var toggleButtons = document.querySelectorAll(".btn");
             toggleButtons.forEach(function (button) {
@@ -160,3 +176,4 @@
         });
     </script>
 }
+

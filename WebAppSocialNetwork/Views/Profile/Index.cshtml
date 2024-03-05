@@ -1,5 +1,5 @@
 ﻿﻿@using SocialNetwork.Core.Application.ViewModels.User
-@model LoginViewModel
+@model SaveUserViewModel
 
 @{
     ViewData["Title"] = "Edit User";
@@ -16,43 +16,44 @@
                             <h4><i class="fa-solid fa-pen-to-square" style="color: #0866ff"></i></h4>
                         </div>
 
-                        <form method="post" asp-controller="User" asp-action="Index">
+                        <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="Edit">
                             <div class="mb-2">
-                                <input asp-for="UserName" class="form-control" placeholder="Name" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
+                                <input asp-for="Name" class="form-control" placeholder="Name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
 
                             </div>
                             <div class="mb-2">
-                                <input asp-for="UserName" class="form-control" placeholder="Last Name" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
+                                <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
 
                             </div>
                             <div class="mb-2">
-                                <input asp-for="UserName" class="form-control" placeholder="Email" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
+                                <input asp-for="Email" class="form-control" placeholder="Email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
 
                             </div>
                             <div class="mb-2">
-                                <input  class="form-control" placeholder="Image" />
+                                <input asp-for="PhotoProfile"  class="form-control"/>
                             </div>
                             <div class="mb-2">
-                                <input asp-for="UserName" class="form-control" placeholder="Phone" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
+                                <input asp-for="Phone" class="form-control" placeholder="Phone" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
 
                             </div>
                             <div class="mb-2">
                                 <input asp-for="Password" class="form-control" placeholder="Password" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="mb-2">
-                                <input asp-for="Password" class="form-control" placeholder="Confirm Password" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
+                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
                             </div>
                            
                             <div class="d-grid gap-2 ">
                                 <button class="btn text-white fw-bold" style="background-color:#0866ff">Edit</button>
                             </div>
                         </form>
+                        <div>
+                            <a asp-controller="Home" asp-action="Index" class="btn text-white w-100 mt-2 fw-bold" style="background-color:#42b72a">Back</a>
+                        </div>
                     </div>
                 </div>
             </div>

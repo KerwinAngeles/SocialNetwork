@@ -46,8 +46,6 @@ namespace SocialNetwork.Infrastructure.Identity
 
             services.AddAuthentication();
 
-           
-
             #endregion
 
             #region "Service"

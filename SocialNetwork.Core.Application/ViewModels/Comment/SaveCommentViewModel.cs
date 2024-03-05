@@ -10,6 +10,8 @@ namespace SocialNetwork.Core.Application.ViewModels.Comment
     {  
         public string Message { get; set; } = null!;
         public string? UserId { get; set; }
+        public string? UserName { get; set; }
+        public string? ImageUrl { get; set; }
         public int PublicationId { get; set; }
         public int? ParentId { get; set; }
         public List<int>? Publication { get; set; }

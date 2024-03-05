@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using SocialNetwork.Core.Application.Dtos.Account;
 using SocialNetwork.Core.Application.Helpers;
 using SocialNetwork.Core.Application.Interfaces.Repositories;
@@ -19,14 +20,16 @@ namespace SocialNetwork.Core.Application.Services
     public class PublicationService : GenericService<SavePublicationViewModel, PublicationViewModel, Publication>, IPublicationService
     {
         private readonly IPublicationRepository _publicationRepository;
+        private readonly ICommentService _commentService;
         private readonly IFriendRepository _friendRepository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAccountService _accountService;
         private readonly AuthenticationResponse userViewModel;
-        public PublicationService(IPublicationRepository publicationRepository, IHttpContextAccessor httpContextAccessor ,IMapper mapper, IAccountService accountService, IFriendRepository friendRepository) : base(publicationRepository, mapper)
+        public PublicationService(IPublicationRepository publicationRepository, IHttpContextAccessor httpContextAccessor ,IMapper mapper, IAccountService accountService, IFriendRepository friendRepository, ICommentService comment) : base(publicationRepository, mapper)
         {
             _publicationRepository = publicationRepository;
+            _commentService = comment;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
             _accountService = accountService;
@@ -46,11 +49,13 @@ namespace SocialNetwork.Core.Application.Services
             await base.Update(vm, id);
         }
 
+     
         public async Task<List<PublicationViewModel>> GetAllViewModelWithInclude()
         {
-            var publicationList = await _publicationRepository.GetAllWithInclude(new List<string> { "Comments" });
+          
+            var publication = await _publicationRepository.GetAllpublicationById(userViewModel.Id);
 
-            return publicationList.Where(publication => publication.UserId == userViewModel.Id).Select(publication => new PublicationViewModel
+            return publication.Select(publication => new PublicationViewModel
             {
                 Id = publication.Id,
                 Title = publication.Title,
@@ -61,94 +66,85 @@ namespace SocialNetwork.Core.Application.Services
                 UserPhoto = userViewModel.ImageUrl,
                 User = userViewModel.Name,
                 UserLastName = userViewModel.LastName,
+                Comments = _commentService.BuildCommentViewModels(publication.Comments.Where(comment => comment.ParentId == null).ToList())
 
-                Comments = publication.Comments.Where(comment => comment.ParentId == null)
+                //Comments = publication.Comments.Where(comment => comment.ParentId == null)
 
-                .Select(comment => new CommentViewModel
-                {
-                    Id = comment.Id,
-                    Message = comment.Message,
-                    UserName = userViewModel.Name,
-                    UserPhoto = userViewModel.ImageUrl,
-                    Children = comment.Children != null
-                    ? comment.Children.Select(reply => new CommentViewModel
-                    {
-                        Id = reply.Id,
-                        Message = reply.Message,
-                        UserName = userViewModel.Name,
-                        UserPhoto = userViewModel.ImageUrl
+                //.Select(comment => new CommentViewModel
+                //{
+                //    Id = comment.Id,
+                //    Message = comment.Message,
+                //    UserName = comment.UserName,
+                //    ImageUrl = comment.ImageUrl,
+                //    Children = comment.Children != null
 
-                    }).ToList()
-                    : new List<CommentViewModel>()
-                }).ToList(),
+                //    ? comment.Children.Select(reply => new CommentViewModel
+                //    {
+                //        Id = reply.Id,
+                //        Message = reply.Message,
+                //        UserName = userViewModel.UserName,
+                //        ImageUrl = userViewModel.ImageUrl
+
+                //    }).ToList()
+
+                //    : new List<CommentViewModel>()
+                //}).ToList(),
             })
             .OrderByDescending(publication => publication.DateCreate)
             .ToList();
         }
-       
+
         public async Task<List<PublicationViewModel>> GetAllPublicationFriend()
         {
-            var currentUser = await _accountService.FindByName(userViewModel.UserName);
-            if (currentUser == null)
+            var friendById = await _friendRepository.GetFriend(userViewModel.Id);
+
+            if(friendById != null)
             {
-                return null;
-            }
+                var publicationFriend = await _accountService.FindById(friendById.FriendId);
+                var publication = await _publicationRepository.GetAllpublicationById(publicationFriend.Id);
 
-            var friends = await _friendRepository.GetAllFriendsOfCurrentUser(currentUser.Id);
-
-            var publicationViewModels = new List<PublicationViewModel>();
-
-            foreach (var friend in friends)
-            {
-                var friendUser = await _accountService.FindById(friend.FriendId);
-                if (friendUser != null)
+                return publication.Where(p => p.UserId == publicationFriend.Id).Select(publication => new PublicationViewModel
                 {
-                    var friendPublications = await _publicationRepository.GetAllWithInclude(new List<string> { "Comments" });
+                    Id = publication.Id,
+                    Title = publication.Title,
+                    ImageUrl = publication.ImageUrl,
+                    VideoUrl = publication.VideoUrl,
+                    DateCreate = publication.DateCreate,
+                    UserName = publicationFriend.UserName,
+                    UserPhoto = publicationFriend.ImageUrl,
+                    User = publicationFriend.Name,
+                    UserLastName = publicationFriend.LastName,
+                    Comments = _commentService.BuildCommentViewModels(publication.Comments.Where(comment => comment.ParentId == null).ToList())
 
-                    var friendPublicationsViewModel = friendPublications
+                    //  Comments = publication.Comments.Where(comment => comment.ParentId == null)
 
-                        .Where(publication => publication.UserId == friendUser.Id)
-                        .Select(publication => new PublicationViewModel
-                        {
-                            Id = publication.Id,
-                            Title = publication.Title,
-                            ImageUrl = publication.ImageUrl,
-                            VideoUrl = publication.VideoUrl,
-                            DateCreate = publication.DateCreate,
-                            UserName = friendUser.UserName,
-                            UserPhoto = friendUser.ImageUrl,
-                            User = friendUser.Name,
-                            UserLastName = friendUser.LastName,
+                    //.Select(comment => new CommentViewModel
+                    //{
+                    //    Id = comment.Id,
+                    //    Message = comment.Message,
+                    //    UserName = comment.UserName,
+                    //    ImageUrl = comment.ImageUrl,
+                    //    Children = comment.Children != null
 
-                            Comments = publication.Comments
-                                .Where(comment => comment.ParentId == null)
-                                .Select(comment => new CommentViewModel
-                                {
-                                    Id = comment.Id,
-                                    Message = comment.Message,
-                                    UserName = friendUser.Name,
-                                    UserPhoto = friendUser.ImageUrl,
-                                    Children = comment.Children != null
-                                        ? comment.Children.Select(reply => new CommentViewModel
-                                        {
-                                            Id = reply.Id,
-                                            Message = reply.Message,
-                                            UserName = friendUser.Name,
-                                            UserPhoto = friendUser.ImageUrl
-                                        }).ToList()
-                                        : new List<CommentViewModel>()
-                                }).ToList()
-                        }).ToList();
+                    //    ? comment.Children.Select(reply => new CommentViewModel
+                    //    {
+                    //        Id = reply.Id,
+                    //        Message = reply.Message,
+                    //        UserName = comment.UserName,
+                    //        ImageUrl = comment.ImageUrl
 
-                    publicationViewModels.AddRange(friendPublicationsViewModel);
-                }
+                    //    }).ToList()
+
+                    //    : new List<CommentViewModel>()
+                    //}).ToList(),
+                })
+                  .OrderByDescending(publication => publication.DateCreate)
+                  .ToList();
             }
-
-            return publicationViewModels.OrderByDescending(publication => publication.DateCreate).ToList();
+            else
+            {
+                return new List<PublicationViewModel>();
+            }
         }
-
     }
-
-
-
 }

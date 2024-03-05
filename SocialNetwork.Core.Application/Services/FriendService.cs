@@ -6,6 +6,7 @@ using SocialNetwork.Core.Application.Interfaces.Repositories;
 using SocialNetwork.Core.Application.Interfaces.Services;
 using SocialNetwork.Core.Application.ViewModels.Friend;
 using SocialNetwork.Core.Application.ViewModels.Publication;
+using SocialNetwork.Core.Application.ViewModels.User;
 using SocialNetwork.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -34,31 +35,35 @@ namespace SocialNetwork.Core.Application.Services
 
         public override async Task<SaveFriendViewModel> Add(SaveFriendViewModel saveFriend)
         {
-            var currentUser = await _accountService.FindByName(_userViewModel.UserName);
+            var currentUser = await _accountService.FindByFriendName(_userViewModel.UserName);
             if(currentUser == null)
             {
                 return null;
             }
 
-            var friendUser = await _accountService.FindByName(saveFriend.UserName);
-            if(friendUser == null || friendUser.Id == currentUser.Id)
+            var friendUser = await _accountService.FindByFriendName(saveFriend.UserName);
+            if(friendUser.HasError == true /*|| friendUser.Id == currentUser.Id*/)
             {
-                return null;
+                saveFriend.HasError = true;
+                saveFriend.Error = $"An error occurred trying to register this user.";
+                return saveFriend;
             }
-
-            var friend = new Friend()
+            else
             {
-                UserId = currentUser.Id,
-                FriendId = friendUser.Id
-            };
+                var friend = new Friend()
+                {
+                    UserId = currentUser.Id,
+                    FriendId = friendUser.Id
+                };
 
-            await _friendRepository.AddAsync(friend);
-            return _mapper.Map<SaveFriendViewModel>(friend);
+                await _friendRepository.AddAsync(friend);
+                return _mapper.Map<SaveFriendViewModel>(friend);
+            }   
         }
 
         public async Task<List<FriendViewModel>> GetAllFriend()
         {
-            var currentUser = await _accountService.FindByName(_userViewModel.UserName);
+            var currentUser = await _accountService.FindByFriendName(_userViewModel.UserName);
             if (currentUser == null)
             {
                 return null;

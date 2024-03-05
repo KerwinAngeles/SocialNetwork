@@ -23,9 +23,6 @@ namespace SocialNetwork.Core.Application.ViewModels.User
         public string? Password { get; set; }
         public string? ConfirmPassword { get; set; }
         public string? ImageUrl { get; set; }
-
-        public ICollection<PublicationViewModel>? Publications { get; set; }
-        public ICollection<CommentViewModel>? Comments { get; set; }
-        public ICollection<ReplyViewModel>? replies { get; set; }
+     
     }
 }

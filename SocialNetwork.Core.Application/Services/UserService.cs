@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using SocialNetwork.Core.Application.Dtos.Account;
+using SocialNetwork.Core.Application.Helpers;
 using SocialNetwork.Core.Application.Interfaces.Repositories;
 using SocialNetwork.Core.Application.Interfaces.Services;
 using SocialNetwork.Core.Application.ViewModels.User;
@@ -15,12 +17,17 @@ namespace SocialNetwork.Core.Application.Services
     public class UserService : IUserService
     {
         private readonly IAccountService _accountService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly AuthenticationResponse userViewModel;
+
         private readonly IMapper _mapper;
         
-        public UserService(IAccountService accountService, IMapper mapper)
+        public UserService(IAccountService accountService, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _accountService = accountService;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
+            userViewModel = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
         }
 
         public async Task<AuthenticationResponse> LoginAsync(LoginViewModel loginVm)
@@ -56,6 +63,17 @@ namespace SocialNetwork.Core.Application.Services
         public async Task SignOutAsync()
         {
             await _accountService.SingOutAsync();
+        }
+
+        public async Task Update(SaveUserViewModel saveUser)
+        {
+            await _accountService.Update(saveUser);
+        }
+
+        public async Task<SaveUserViewModel> GetById(string id)
+        {
+            id = userViewModel.Id;
+            return await _accountService.FindById(id);
         }
     }
 }

@@ -56,8 +56,6 @@ namespace SocialNetwork.Core.Application.Mappings
 
             #region "Comment"
             CreateMap<Comment, CommentViewModel>()
-                .ForMember(x => x.UserName, opt => opt.Ignore())
-                .ForMember(x => x.UserPhoto, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<Comment, SaveCommentViewModel>()

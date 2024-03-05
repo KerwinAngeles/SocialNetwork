@@ -10,5 +10,6 @@ namespace SocialNetwork.Core.Application.Interfaces.Repositories
     public interface IFriendRepository : IGenericRepository<Friend>
     {
         Task<List<Friend>> GetAllFriendsOfCurrentUser(string currentUserId);
+        Task<Friend> GetFriend(string currentFriend);
     }
 }
