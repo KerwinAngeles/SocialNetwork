@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SocialNetwork.Core.Application.ViewModels.Publication;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,6 @@ namespace SocialNetwork.Core.Application.Interfaces.Services
         Task Delete(int id);
         Task<List<ViewModel>> GetAll();
         Task<SaveViewModel> GetById(int id);
+
     }
 }

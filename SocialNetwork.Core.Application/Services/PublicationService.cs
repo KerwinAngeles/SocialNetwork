@@ -40,20 +40,24 @@ namespace SocialNetwork.Core.Application.Services
         public override async Task<SavePublicationViewModel> Add(SavePublicationViewModel vm)
         {
             vm.UserId = userViewModel.Id;
+            vm.UserName = userViewModel.Name;
+            vm.UserLastName = userViewModel.LastName;
+            vm.UserPhoto = userViewModel.ImageUrl;
             return await base.Add(vm);
         }
 
         public override async Task Update(SavePublicationViewModel vm, int id)
         {
             vm.UserId = userViewModel.Id;
+            vm.UserName = userViewModel.Name;
+            vm.UserLastName = userViewModel.LastName;
+            vm.UserPhoto = userViewModel.ImageUrl;
             await base.Update(vm, id);
         }
 
-     
-        public async Task<List<PublicationViewModel>> GetAllViewModelWithInclude()
+        public async Task<List<PublicationViewModel>> GetAllpublicationById(string id)
         {
-          
-            var publication = await _publicationRepository.GetAllpublicationById(userViewModel.Id);
+            var publication = await _publicationRepository.GetAllpublicationById(id);
 
             return publication.Select(publication => new PublicationViewModel
             {
@@ -63,32 +67,10 @@ namespace SocialNetwork.Core.Application.Services
                 VideoUrl = publication.VideoUrl,
                 DateCreate = publication.DateCreate,
                 UserName = userViewModel.UserName,
-                UserPhoto = userViewModel.ImageUrl,
-                User = userViewModel.Name,
-                UserLastName = userViewModel.LastName,
+                UserPhoto = publication.UserPhoto,
+                User = publication.UserName,
+                UserLastName = publication.UserLastName,
                 Comments = _commentService.BuildCommentViewModels(publication.Comments.Where(comment => comment.ParentId == null).ToList())
-
-                //Comments = publication.Comments.Where(comment => comment.ParentId == null)
-
-                //.Select(comment => new CommentViewModel
-                //{
-                //    Id = comment.Id,
-                //    Message = comment.Message,
-                //    UserName = comment.UserName,
-                //    ImageUrl = comment.ImageUrl,
-                //    Children = comment.Children != null
-
-                //    ? comment.Children.Select(reply => new CommentViewModel
-                //    {
-                //        Id = reply.Id,
-                //        Message = reply.Message,
-                //        UserName = userViewModel.UserName,
-                //        ImageUrl = userViewModel.ImageUrl
-
-                //    }).ToList()
-
-                //    : new List<CommentViewModel>()
-                //}).ToList(),
             })
             .OrderByDescending(publication => publication.DateCreate)
             .ToList();
@@ -115,28 +97,6 @@ namespace SocialNetwork.Core.Application.Services
                     User = publicationFriend.Name,
                     UserLastName = publicationFriend.LastName,
                     Comments = _commentService.BuildCommentViewModels(publication.Comments.Where(comment => comment.ParentId == null).ToList())
-
-                    //  Comments = publication.Comments.Where(comment => comment.ParentId == null)
-
-                    //.Select(comment => new CommentViewModel
-                    //{
-                    //    Id = comment.Id,
-                    //    Message = comment.Message,
-                    //    UserName = comment.UserName,
-                    //    ImageUrl = comment.ImageUrl,
-                    //    Children = comment.Children != null
-
-                    //    ? comment.Children.Select(reply => new CommentViewModel
-                    //    {
-                    //        Id = reply.Id,
-                    //        Message = reply.Message,
-                    //        UserName = comment.UserName,
-                    //        ImageUrl = comment.ImageUrl
-
-                    //    }).ToList()
-
-                    //    : new List<CommentViewModel>()
-                    //}).ToList(),
                 })
                   .OrderByDescending(publication => publication.DateCreate)
                   .ToList();
@@ -144,6 +104,18 @@ namespace SocialNetwork.Core.Application.Services
             else
             {
                 return new List<PublicationViewModel>();
+            }
+        }
+
+        public async Task Update(string userId, string ImageUrl, string userName, string lastName)
+        {
+            var publication = await _publicationRepository.GetAllpublicationById(userId);
+            foreach (var item in publication)
+            {
+                item.UserName = userName;
+                item.UserLastName = lastName;
+                item.UserPhoto = ImageUrl;
+                await _publicationRepository.UpdateAsync(item, item.Id);
             }
         }
     }

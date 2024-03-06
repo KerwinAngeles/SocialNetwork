@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork.Core.Application.ViewModels.User
 {
-    public class SaveUserViewModel
+    public class EditUserViewModel
     {
         public string? Id { get; set; }
 
@@ -29,24 +29,16 @@ namespace SocialNetwork.Core.Application.ViewModels.User
         [DataType(DataType.PhoneNumber)]
         public string? Phone { get; set; }
 
-        [Required(ErrorMessage = "You must enter a user name!!")]
-        [DataType(DataType.Text)]
-        public string? UserName { get; set; } 
-
-        [Required(ErrorMessage = "You must enter a password!!")]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "The password must be the same")]
-        [Required(ErrorMessage = "You must enter a Confirm password")]
         [DataType(DataType.Password)]
         public string? ConfirmPassword { get; set; }
-        public string? ImageUrl { get; set; }
 
-        [Required(ErrorMessage = "You must enter a photo")]
         [DataType(DataType.Upload)]
         public IFormFile? PhotoProfile { get; set; }
-        public bool HasError { get; set; }
-        public string? Error { get; set; }
+        public string? ImageUrl { get; set; }
+
     }
 }

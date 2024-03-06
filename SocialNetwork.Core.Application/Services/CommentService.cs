@@ -10,6 +10,7 @@ using SocialNetwork.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +37,15 @@ namespace SocialNetwork.Core.Application.Services
             return await base.Add(vm);
         }
 
+        public async Task Update(string userId, string ImageUrl)
+        {
+            var comment = await _commentRepository.GetAllCommentByUserId(userId);
+            foreach (var item in comment)
+            {
+                item.ImageUrl = ImageUrl;
+                await _commentRepository.UpdateAsync(item, item.Id);
+            }
+        }
         public List<CommentViewModel> BuildCommentViewModels(List<Comment> comments)
         {
             return comments.Select(comment => new CommentViewModel

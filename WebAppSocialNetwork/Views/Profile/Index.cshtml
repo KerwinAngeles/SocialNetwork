@@ -1,5 +1,5 @@
 ﻿﻿@using SocialNetwork.Core.Application.ViewModels.User
-@model SaveUserViewModel
+@model EditUserViewModel
 
 @{
     ViewData["Title"] = "Edit User";
@@ -20,25 +20,22 @@
                             <div class="mb-2">
                                 <input asp-for="Name" class="form-control" placeholder="Name" />
                                 <span asp-validation-for="Name" class="text-danger"></span>
-
                             </div>
                             <div class="mb-2">
                                 <input asp-for="LastName" class="form-control" placeholder="Last Name" />
                                 <span asp-validation-for="LastName" class="text-danger"></span>
-
                             </div>
                             <div class="mb-2">
                                 <input asp-for="Email" class="form-control" placeholder="Email" />
                                 <span asp-validation-for="Email" class="text-danger"></span>
-
                             </div>
                             <div class="mb-2">
                                 <input asp-for="PhotoProfile"  class="form-control"/>
+
                             </div>
                             <div class="mb-2">
                                 <input asp-for="Phone" class="form-control" placeholder="Phone" />
                                 <span asp-validation-for="Phone" class="text-danger"></span>
-
                             </div>
                             <div class="mb-2">
                                 <input asp-for="Password" class="form-control" placeholder="Password" />
@@ -49,7 +46,8 @@
                            
                             <div class="d-grid gap-2 ">
                                 <button class="btn text-white fw-bold" style="background-color:#0866ff">Edit</button>
-                            </div>
+                            </div>   
+                          
                         </form>
                         <div>
                             <a asp-controller="Home" asp-action="Index" class="btn text-white w-100 mt-2 fw-bold" style="background-color:#42b72a">Back</a>

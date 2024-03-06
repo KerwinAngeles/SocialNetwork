@@ -18,7 +18,8 @@ namespace SocialNetwork.Core.Application.Interfaces.Services
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request, string origin);
         Task<string> ConfirmAccountAsync(string userId, string token);
         Task<SaveUserViewModel> FindByName(string name);
-        Task Update(SaveUserViewModel saveUser);
+        Task Update(EditUserViewModel saveUser);
+        Task<EditUserViewModel> FindByIdEditProfile(string Id);
         Task<SaveUserViewModel> FindById(string Id);
         Task<SaveFriendViewModel> FindByFriendName(string name);
         

@@ -65,7 +65,7 @@ namespace SocialNetwork.Core.Application.Services
             await _accountService.SingOutAsync();
         }
 
-        public async Task Update(SaveUserViewModel saveUser)
+        public async Task Update(EditUserViewModel saveUser)
         {
             await _accountService.Update(saveUser);
         }
@@ -75,5 +75,11 @@ namespace SocialNetwork.Core.Application.Services
             id = userViewModel.Id;
             return await _accountService.FindById(id);
         }
+        public async Task<EditUserViewModel> GetByIdEditProfile(string id)
+        {
+            id = userViewModel.Id;
+            return await _accountService.FindByIdEditProfile(id);
+        }
+
     }
 }

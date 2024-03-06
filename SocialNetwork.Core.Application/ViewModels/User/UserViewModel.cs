@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SocialNetwork.Core.Application.ViewModels.Comment;
 using SocialNetwork.Core.Application.ViewModels.Publication;
-using SocialNetwork.Core.Application.ViewModels.Reply;
 using SocialNetwork.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;

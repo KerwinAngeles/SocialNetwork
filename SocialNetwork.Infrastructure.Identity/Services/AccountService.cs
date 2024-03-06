@@ -106,6 +106,38 @@ namespace SocialNetwork.Infrastructure.Identity.Services
 
            
         }
+        public async Task<EditUserViewModel> FindByIdEditProfile(string Id)
+        {
+            var user = await _userManager.FindByIdAsync(Id);
+            EditUserViewModel userViewModel = new();
+
+            if (user != null)
+            {
+
+                userViewModel.Id = user.Id;
+                userViewModel.Name = user.Name;
+                userViewModel.LastName = user.LastName;
+                userViewModel.Email = user.Email;
+                userViewModel.Phone = user.PhoneNumber;
+                userViewModel.ImageUrl = user.ImageUrl;
+
+
+                return userViewModel;
+            }
+            else
+            {
+                return userViewModel;
+            }
+        }
+
+        public async Task<string> UpdatePassword(string userId, string newPassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var newPasswordHash = _userManager.PasswordHasher.HashPassword(user, newPassword);
+
+            return newPasswordHash;
+        }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
         {
@@ -284,9 +316,10 @@ namespace SocialNetwork.Infrastructure.Identity.Services
 
         }
 
-        public async Task Update(SaveUserViewModel saveUser)
+        public async Task Update(EditUserViewModel saveUser)
         {
             var user = await _userManager.FindByIdAsync(saveUser.Id);
+
             user.Name = saveUser.Name;
             user.LastName = saveUser.LastName;
             user.Email = saveUser.Email;
@@ -294,8 +327,7 @@ namespace SocialNetwork.Infrastructure.Identity.Services
             user.ImageUrl = saveUser.ImageUrl;
             if(saveUser.Password != null && saveUser.ConfirmPassword != null)
             {
-                user.PasswordHash = saveUser.Password;
-                user.PasswordHash = saveUser.ConfirmPassword;
+                user.PasswordHash = await UpdatePassword(saveUser.Id, saveUser.Password);
             }     
             await _userManager.UpdateAsync(user);
         }

@@ -24,6 +24,9 @@ namespace SocialNetwork.Core.Application.ViewModels.Publication
         [DataType(DataType.Upload)]
         public IFormFile? File { get; set; }
         public string? UserId { get; set; }
+        public string? UserName { get; set; }
+        public string? UserLastName { get; set; }
+        public string? UserPhoto { get; set; }
 
         public SavePublicationViewModel()
         {

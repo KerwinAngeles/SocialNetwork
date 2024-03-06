@@ -42,10 +42,14 @@ namespace SocialNetwork.Core.Application.Services
             }
 
             var friendUser = await _accountService.FindByFriendName(saveFriend.UserName);
-            if(friendUser.HasError == true /*|| friendUser.Id == currentUser.Id*/)
+            if(friendUser.HasError == true)
             {
                 saveFriend.HasError = true;
                 saveFriend.Error = $"An error occurred trying to register this user.";
+                return saveFriend;
+            }
+            else if(friendUser.UserName == currentUser.UserName)
+            {
                 return saveFriend;
             }
             else

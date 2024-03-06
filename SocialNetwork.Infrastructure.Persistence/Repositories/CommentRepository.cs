@@ -1,4 +1,5 @@
-﻿using SocialNetwork.Core.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SocialNetwork.Core.Application.Interfaces.Repositories;
 using SocialNetwork.Core.Domain.Entities;
 using SocialNetwork.Infrastructure.Persistence.Contexts;
 using System;
@@ -15,6 +16,12 @@ namespace SocialNetwork.Infrastructure.Persistence.Repositories
         public CommentRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<List<Comment>> GetAllCommentByUserId(string id)
+        {
+            var comment = await _context.Comments.Where(c => c.UserId == id).ToListAsync();
+            return comment;
         }
 
     }

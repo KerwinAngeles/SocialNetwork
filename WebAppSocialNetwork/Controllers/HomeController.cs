@@ -31,9 +31,38 @@ namespace WebAppSocialNetwork.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            ViewBag.userName = _userViewModel.Name;
-            ViewBag.photo = _userViewModel.ImageUrl;
-            return View(await _publicationService.GetAllViewModelWithInclude());
+            List<PublicationViewModel> publication = await _publicationService.GetAllpublicationById(_userViewModel.Id);
+            return View(publication);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateComment(SaveCommentViewModel commentViewModel)
+        {
+            commentViewModel.UserName = _userViewModel.UserName;
+            commentViewModel.ImageUrl = _userViewModel.ImageUrl;
+
+            if (!ModelState.IsValid)
+            {
+                return View("Index", commentViewModel);
+            }
+
+            await _commentService.Add(commentViewModel);
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateReplyComment(SaveCommentViewModel commentViewModel)
+        {
+            commentViewModel.UserName = _userViewModel.UserName;
+            commentViewModel.ImageUrl = _userViewModel.ImageUrl;
+
+            if (!ModelState.IsValid)
+            {
+                return View("Index", commentViewModel);
+            }
+            await _commentService.Add(commentViewModel);
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
+
         }
 
         public IActionResult Create()

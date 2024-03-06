@@ -16,6 +16,9 @@ namespace SocialNetwork.Core.Domain.Entities
 
         //Property Navigation
         public string? UserId { get; set; }
+        public string? UserName { get; set; }
+        public string? UserLastName { get; set; }
+        public string? UserPhoto { get; set; }
         public ICollection<Comment>? Comments { get; set;} 
     }
 }

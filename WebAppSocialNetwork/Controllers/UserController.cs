@@ -5,6 +5,7 @@ using SocialNetwork.Core.Application.Dtos.Account;
 using SocialNetwork.Core.Application.Helpers;
 using SocialNetwork.Core.Application.Interfaces.Services;
 using SocialNetwork.Core.Application.ViewModels.User;
+using WebAppSocialNetwork.Middleware;
 
 namespace WebAppSocialNetwork.Controllers
 {
@@ -15,11 +16,11 @@ namespace WebAppSocialNetwork.Controllers
         {
             _userService = userService;
         }
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult Index()
         {
             return View(new LoginViewModel());
         }
-
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel loginViewModel)
         {
@@ -49,7 +50,7 @@ namespace WebAppSocialNetwork.Controllers
             HttpContext.Session.Remove("user");
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
-
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult Register()
         {
             return View(new SaveUserViewModel());
@@ -76,13 +77,13 @@ namespace WebAppSocialNetwork.Controllers
         
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
-
+        [ServiceFilter(typeof(LoginAuthorize))]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             string response = await _userService.ConfirmEmailAsync(userId, token);
             return View("ConfirmEmail", response);
         }
-
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult ForgotPassword()
         {
             return View(new ForgotPasswordViewModel());
@@ -108,7 +109,7 @@ namespace WebAppSocialNetwork.Controllers
             return RedirectToRoute(new { controller = "User", action = "Index" });
 
         }
-
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult ResetPassword(string token)
         {
             return View(new ResetPasswordViewModel { Token = token});
@@ -134,6 +135,11 @@ namespace WebAppSocialNetwork.Controllers
             }
 
             return RedirectToRoute(new { controller = "User", action = "Index" });
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

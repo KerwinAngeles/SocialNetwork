@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Core.Application.Dtos.Account;
 using SocialNetwork.Core.Application.Helpers;
@@ -7,6 +8,7 @@ using SocialNetwork.Core.Application.ViewModels.Friend;
 
 namespace WebAppSocialNetwork.Controllers
 {
+    [Authorize]
     public class FriendController : Controller
     {
         private readonly IFriendService _friendService;
@@ -20,7 +22,7 @@ namespace WebAppSocialNetwork.Controllers
             _publicationService = publicationService;
             _userViewModel = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
         }
-
+    
         public async Task<IActionResult> Index()
         {
             List<FriendViewModel> friends = await _friendService.GetAllFriend();
@@ -46,7 +48,7 @@ namespace WebAppSocialNetwork.Controllers
             if (saveFriend.HasError)
             {
                 saveFriend.HasError = true;
-                saveFriend.Error = $"This user name is not found";
+                saveFriend.Error = $"This user name is not found or you can't no add yourself as friend.";
                 return View(saveFriend);
             }
 
@@ -64,8 +66,6 @@ namespace WebAppSocialNetwork.Controllers
             await _friendService.Delete(id);
             return RedirectToRoute(new { controller = "Friend", action = "Index" });
         }
-
-
 
     }
 }

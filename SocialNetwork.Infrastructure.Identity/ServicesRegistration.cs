@@ -39,9 +39,11 @@ namespace SocialNetwork.Infrastructure.Identity
                 .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders();
 
-            services.ConfigureApplicationCookie(option =>
+            services.ConfigureApplicationCookie(options =>
             {
-                option.LoginPath = "/User";
+                options.LoginPath = "/User/AccessDenied";
+
+
             });
 
             services.AddAuthentication();

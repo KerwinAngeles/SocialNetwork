@@ -27,6 +27,7 @@ namespace SocialNetwork.Core.Application.Mappings
             CreateMap<RegisterRequest, SaveUserViewModel>()
                 .ForMember(x => x.HasError, opt => opt.Ignore())
                 .ForMember(x => x.Error, opt => opt.Ignore())
+                
                 .ReverseMap();
 
             CreateMap<ForgotPasswordRequest, ForgotPasswordViewModel>()
@@ -42,14 +43,12 @@ namespace SocialNetwork.Core.Application.Mappings
 
             #region "Publication"
             CreateMap<Publication, PublicationViewModel>()
-                .ForMember(x => x.UserName, opt => opt.Ignore())
-                .ForMember(x => x.UserPhoto, opt => opt.Ignore())
                 .ForMember(x => x.User, opt => opt.Ignore())
-                .ForMember(x => x.UserLastName, opt  => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<Publication, SavePublicationViewModel>()
                 .ForMember(x => x.File, opt => opt.Ignore())
+                
                 .ReverseMap()
                 .ForMember(x => x.Comments, opt => opt.Ignore());
             #endregion

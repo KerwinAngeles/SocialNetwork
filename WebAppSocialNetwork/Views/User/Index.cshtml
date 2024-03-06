@@ -1,4 +1,5 @@
 ﻿﻿@using SocialNetwork.Core.Application.ViewModels.User
+
 @model LoginViewModel
 
 @{
@@ -12,14 +13,17 @@
                 <div class="card border-0 shadow">
                     <div class="card-body">
                         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-
-                        @if(Model.HasError)
+                        @if(Model != null)
                         {
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <p>@Model.Error</p>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                            @if (Model.HasError)
+                            {
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <p>@Model.Error</p>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
                         }
+                       
                         <div class="text-center">
                             <h4><i class="fa-brands fa-facebook" style="color: #0866ff"></i></h4>
                         </div>
@@ -32,7 +36,7 @@
                                 <input asp-for="Password" class="form-control" placeholder="Password" />
                             </div>
                             <div class="d-grid gap-2 ">
-                                <button class="btn text-white fw-bold" style="background-color:#0866ff">Login</button>
+                                <button  class="btn text-white fw-bold" style="background-color:#0866ff">Login</button>
                             </div>
          
                         </form>

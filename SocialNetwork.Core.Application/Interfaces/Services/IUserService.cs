@@ -17,7 +17,8 @@ namespace SocialNetwork.Core.Application.Interfaces.Services
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordViewModel resetPasswordVm, string origin);
         Task SignOutAsync();
         Task<SaveUserViewModel> GetById(string id);
-        Task Update(SaveUserViewModel saveUser);
+        Task<EditUserViewModel> GetByIdEditProfile(string id);
+        Task Update(EditUserViewModel saveUser);
         
     }
 }
