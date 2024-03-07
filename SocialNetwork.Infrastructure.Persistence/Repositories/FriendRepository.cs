@@ -29,7 +29,12 @@ namespace SocialNetwork.Infrastructure.Persistence.Repositories
         {
             var friend = await _context.Friends.FirstOrDefaultAsync(f =>f.UserId == currentFriend);
             return friend;
+        }
 
+        public async Task<Friend> GetFriendById(string id)
+        {
+            var findFriend = await _context.Friends.FirstOrDefaultAsync(f => f.FriendId == id);
+            return findFriend;
         }
 
     }

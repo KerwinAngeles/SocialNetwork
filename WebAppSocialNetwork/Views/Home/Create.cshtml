@@ -3,28 +3,27 @@
 @{
     ViewData["Title"] = "Create Publication";
 }
-
 <div class="card gedf-card" style="max-width: 500px;">
-        <div class="card-header text-dark text-center" style="background: #f6f8fa">
-            <h5><i class="fa-solid fa-pen-to-square"></i></h5>
-        </div>
-        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Create">
-            <div class="card-body">
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                        <div class="form-group">
-                            <span asp-validation-for="Title" class="text-danger"></span>
-                            <input asp-for="Title" class="form-control mt-2" id="message" rows="3" placeholder="What are you thinking?" />
-                        </div>
+    <div class="card-header text-dark text-center" style="background: #f6f8fa">
+        <h5><i class="fa-solid fa-pen-to-square"></i></h5>
+    </div>
+    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Create">
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                    <div class="form-group">
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                        <input asp-for="Title" class="form-control mt-2" id="message" rows="3" placeholder="What are you thinking?" />
                     </div>
                 </div>
-
-                <div class="card-footer mt-2">
-                    <input asp-for="File" class="form-control mt-2" placeholder="Image file" />
-                    <input asp-for="VideoUrl" class="form-control mt-2" placeholder="Video url" />
-                    <input type="hidden" asp-for="Id" />
-                    <button type="submit" class="btn mt-2 text-white fw-bold" style="background: #fc4985">Share</button>
-                </div>
             </div>
-        </form>
+
+            <div class="card-footer mt-2">
+                <input asp-for="File" class="form-control mt-2" placeholder="Image file" />
+                <input asp-for="VideoUrl" class="form-control mt-2" placeholder="Video url" />
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn mt-2 text-white fw-bold" style="background: #fc4985">Share</button>
+            </div>
+        </div>
+    </form>
 </div>

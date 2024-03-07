@@ -54,7 +54,17 @@ namespace SocialNetwork.Core.Application.Services
             vm.UserPhoto = userViewModel.ImageUrl;
             await base.Update(vm, id);
         }
-
+        public async Task Update(string userId, string ImageUrl, string userName, string lastName)
+        {
+            var publication = await _publicationRepository.GetAllpublicationById(userId);
+            foreach (var item in publication)
+            {
+                item.UserName = userName;
+                item.UserLastName = lastName;
+                item.UserPhoto = ImageUrl;
+                await _publicationRepository.UpdateAsync(item, item.Id);
+            }
+        }
         public async Task<List<PublicationViewModel>> GetAllpublicationById(string id)
         {
             var publication = await _publicationRepository.GetAllpublicationById(id);
@@ -107,16 +117,6 @@ namespace SocialNetwork.Core.Application.Services
             }
         }
 
-        public async Task Update(string userId, string ImageUrl, string userName, string lastName)
-        {
-            var publication = await _publicationRepository.GetAllpublicationById(userId);
-            foreach (var item in publication)
-            {
-                item.UserName = userName;
-                item.UserLastName = lastName;
-                item.UserPhoto = ImageUrl;
-                await _publicationRepository.UpdateAsync(item, item.Id);
-            }
-        }
+       
     }
 }

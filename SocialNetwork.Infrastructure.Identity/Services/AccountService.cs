@@ -76,7 +76,6 @@ namespace SocialNetwork.Infrastructure.Identity.Services
             else
             {
                 userViewModel.HasError = true;
-                userViewModel.Error = $"An error occurred trying to register this user.";
                 return userViewModel;
             }
         }

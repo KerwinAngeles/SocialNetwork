@@ -101,8 +101,8 @@ namespace WebAppSocialNetwork.Controllers
             ForgotPasswordResponse forgotResponse = await _userService.ForgotPasswordAsync(forgotViewModel, origin);
             if (forgotResponse.HasError)
             {
-                forgotViewModel.HasError = forgotViewModel.HasError;
-                forgotViewModel.Error = forgotViewModel.Error;
+                forgotViewModel.HasError = forgotResponse.HasError;
+                forgotViewModel.Error = forgotResponse.Error;
                 return View(forgotViewModel);
             }
 

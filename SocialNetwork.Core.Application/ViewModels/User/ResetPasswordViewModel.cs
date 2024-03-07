@@ -21,7 +21,7 @@ namespace SocialNetwork.Core.Application.ViewModels.User
         public string? Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "The password must be the same")]
-        [Required(ErrorMessage = "You must enter a password")]
+        [Required(ErrorMessage = "You must confirm the password")]
         [DataType(DataType.Password)]
         public string? ConfirmPassword { get; set; }
         public bool HasError { get; set; }

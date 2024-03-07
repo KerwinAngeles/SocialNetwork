@@ -16,7 +16,7 @@
         <div class="col-md-4 gedf-main">
             @foreach (var publication in Model)
             {
-                <div class="card gedf-card" style="max-width: 400px;">
+                <div class="card gedf-card mt-2" style="max-width: 400px;">
                     <div class="card-header" style="background: #fff">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -83,20 +83,6 @@
                                             <div class="mt-2 mb-2" style="margin-left: 40px;">
                                                 <img class="rounded-circle" width="40" height="30" src="@reply.ImageUrl" alt="" /> @reply.UserName: @reply.Message
                                             </div>
-                                            @foreach (var replyreply in comment.Children)
-                                            {
-                                                <div class="mt-2" style="margin-left: 40px;">
-                                                    <a class="btn-reply mr-2 mb-2 text-decoration-none text-secondary" style="border: none; padding-left: 45px; padding-right: 45px; font-size: 0.8em;cursor: pointer;"> reply</a>
-                                                    <div class="replies mt-2" style="display:none">
-                                                        <form asp-controller="Comment" asp-action="CreateReplyComment" method="post">
-                                                            <input type="hidden" name="publicationId" value="@publication.Id" />
-                                                            <input type="hidden" name="ParentId" value="@replyreply.Id" />
-                                                            <input required class="form-control-sm me-2 border-1" name="Message" placeholder="answer a comment" />
-                                                            <button type="submit" class="btn btn-secondary btn-sm">Submit</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            }
                                         }
 
                                       

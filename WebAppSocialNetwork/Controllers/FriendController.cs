@@ -43,12 +43,12 @@ namespace WebAppSocialNetwork.Controllers
                 return View("AddFriend", saveFriend);
             }
 
-            await _friendService.Add(saveFriend);
+            var user =  await _friendService.Add(saveFriend);
 
             if (saveFriend.HasError)
             {
-                saveFriend.HasError = true;
-                saveFriend.Error = $"This user name is not found or you can't no add yourself as friend.";
+                saveFriend.HasError = user.HasError;
+                saveFriend.Error = user.Error;
                 return View(saveFriend);
             }
 

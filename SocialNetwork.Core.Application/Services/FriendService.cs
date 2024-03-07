@@ -36,22 +36,31 @@ namespace SocialNetwork.Core.Application.Services
         public override async Task<SaveFriendViewModel> Add(SaveFriendViewModel saveFriend)
         {
             var currentUser = await _accountService.FindByFriendName(_userViewModel.UserName);
+            
             if(currentUser == null)
             {
                 return null;
             }
 
             var friendUser = await _accountService.FindByFriendName(saveFriend.UserName);
+            
+            if(currentUser.Name == friendUser.Name)
+            {
+                saveFriend.HasError = true;
+                saveFriend.Error = "You can't add yourself as a friend";
+                return saveFriend;
+            }
             if(friendUser.HasError == true)
             {
                 saveFriend.HasError = true;
-                saveFriend.Error = $"An error occurred trying to register this user.";
+                saveFriend.Error = "This user was not found.";
                 return saveFriend;
             }
             else if(friendUser.UserName == currentUser.UserName)
             {
                 return saveFriend;
             }
+            
             else
             {
                 var friend = new Friend()
@@ -59,7 +68,13 @@ namespace SocialNetwork.Core.Application.Services
                     UserId = currentUser.Id,
                     FriendId = friendUser.Id
                 };
-
+                var findFriend = await _friendRepository.GetFriendById(friend.FriendId);
+                if (findFriend != null)
+                {
+                    saveFriend.HasError = true;
+                    saveFriend.Error = "You can't add your friend again.";
+                    return saveFriend;
+                }
                 await _friendRepository.AddAsync(friend);
                 return _mapper.Map<SaveFriendViewModel>(friend);
             }   

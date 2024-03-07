@@ -11,5 +11,6 @@ namespace SocialNetwork.Core.Application.Interfaces.Repositories
     {
         Task<List<Friend>> GetAllFriendsOfCurrentUser(string currentUserId);
         Task<Friend> GetFriend(string currentFriend);
+        Task<Friend> GetFriendById(string id);
     }
 }

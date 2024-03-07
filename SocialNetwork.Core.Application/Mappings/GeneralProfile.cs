@@ -65,6 +65,11 @@ namespace SocialNetwork.Core.Application.Mappings
 
             #region "Friend"
             CreateMap<Friend, FriendViewModel>()
+                .ForMember(x => x.Name, opt => opt.Ignore())
+                .ForMember(x => x.LastName, opt => opt.Ignore())
+                .ForMember(x => x.UserName, opt => opt.Ignore())
+                .ForMember(x => x.ImageUrl, opt => opt.Ignore())
+
                 .ReverseMap();
             CreateMap<Friend, SaveFriendViewModel>()
                 .ReverseMap();
